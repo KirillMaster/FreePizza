@@ -18,37 +18,28 @@ namespace FreePizza
         {
             Console.WriteLine("Бот для бесплатной пиццы успешно запущен!");
 
-
-
             string[] messages = new string[]
             {
-                "Хочу пиццу!",
-                "Pizza Pizza",
-                "Win",
-                "Пиццу плз))",
-                "Пожалуйста, я хочу выиграть",
-                "piza",
-                "pizza",
-                "plz",
-                "вин",
-                "пицца пицца",
-                "победа",
-                "вин",
-                "суши",
-                "хочу кушать",
-                "кусь",
-                "суши суши",
-                "изи бризи",
-                "easy",
-                "good game",
-                "gg wp",
-                "виннер",
-                "я выиграю",
-                "скриньте",
-                "чекай",
-                "олды здесь",
-                "шин",
-                "winner winner chiken dinner",
+                "Хочу пиццу!", "Pizza Pizza", "Win", "Пиццу плз))",
+                "Пожалуйста, я хочу выиграть", "piza", "pizza", "plz",
+                "вин", "пицца пицца", "победа", "вин",
+                "суши", "хочу кушать", "кусь", "суши суши",
+                "изи бризи", "easy", "good game", "gg wp",
+                "виннер", "я выиграю", "скриньте", "чекай",
+                "олды здесь", "шин", "winner winner chiken dinner", "победителей не судят",
+                "я тебе покушать принес", "Суши это дар богов", "мужчины не собаки, на кости не бросаются", "лучший подарок для МУЖЧИНЫ!",
+                "Хочу такой завтрак в постель", "кто бы мне такое приготовил", "Ммм как вскусно", "спасибо за фри мил",
+                "чую вкус победы", "А можно колу в придачу", "не могу дождаться победы", "чувствую себя Цезарем",
+                "А доставка будет?", "я такие раньше заказывал", "подарю их своей маме", "жаль, что 8 марта уже прошло",
+                "Лучше конкурса не было!", "жду не дождусь!", "уже пускаю слюнки", "Слюнки текут",
+                "представляю оба сета у себя во рту", "а почему не предоставили возможность выбора", "а чек будет?", "столько желающих победить!",
+                "Всем удачи!", "желаю приятно подкрепиться победителю!", "я уже чую запах победы", "Нууу когда уже результаты",
+                "А кто чекает комменты?", "лол вы правда верите в победу", "лол",
+                "лол можете со мной и не тягаться даже", "засекаю комменты на секундомере", "Эх сейчас бы 4 минуты", "блин ну когда уже",
+                "це не е реальним", "це не е можливим", "простой люд обманывают", "люди, зачем вы так спамите!",
+                "Эх, сейчас бы покушать пицыы", "эх, сейчас бы суши", "Могу поделиться суши с проигравшими ;)", "результаты дня через 2 буду",
+                "Наверное, невозможно победить", "а комменты вообще чекают?", "когда вы все уже пойдете спать или работать", "Выживает сильнейший!",
+                "Самые голодные будут бороться до конца!",
             };
 
             VkApi api = new VkApi();
@@ -56,21 +47,32 @@ namespace FreePizza
            
             DateTime time = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("Russian Standard Time"));
             Console.WriteLine($"Текущее время: {time.ToString()}");
-            string path = @"C:\diplom\Example.txt";
-            File.AppendAllLines(path, new[] { "Init" });
 
             const long ownerId = -54267882;
             const long postId = 669135; 
             const long myId = 17370187;
 
             const long timeToCreateComment = 180000;
-            const long timeLimit =  241000;
+            const long timeLimit =  243000;
             const int sleepMs = 500;
+
+            const bool test = false;
 
             api.Authorize(new ApiAuthParams
             {
-                AccessToken = "3d9e2dc94053b9bcfd6676f39b968b70cf24b4380be0cd0518cacab46dc189ae3ac8e369e9197f142d784",
+                AccessToken = "b19e2a0059b502a00be6318a5f107ba7796bff42fd963963a5fdb74461e102e9b67c4355a40c92bef173a",
             });
+
+
+            if (test)
+            {
+                api.Wall.CreateComment(new WallCreateCommentParams()
+                {
+                    OwnerId = -110029529,
+                    PostId = 33888,
+                    Message = "TEST",
+                });
+            }
 
 
             Console.WriteLine("Успешно авторизовались. Начинаем чекать комментарии:");
@@ -94,7 +96,8 @@ namespace FreePizza
 
             //максимальное время жизни комментария с момента запуска приложения.
             long maxLifeTimeOfComment = 0;
-
+            var authorName = string.Empty;
+            string maxLifeTimeOfCommentAuthorName = string.Empty;
 
             while (true) {
 
@@ -111,16 +114,14 @@ namespace FreePizza
 
                     watchRequestTime.Stop();
                     var elapsedMsOnRequest = watchRequestTime.ElapsedMilliseconds;
-
-                
-
+                   
                     if (lastCommentUserId != comments.FirstOrDefault()?.from_id)
                     {
                         lastCommentUserId = comments.FirstOrDefault()?.from_id;
 
                         Console.ForegroundColor = ConsoleColor.Green;
                         var authorProfile = response.Profiles.Where(x => x.Id == lastCommentUserId.Value).FirstOrDefault();
-                        string authorName = authorProfile?.first_name + " " + authorProfile?.last_name;
+                        authorName = authorProfile?.first_name + " " + authorProfile?.last_name;
                         Console.WriteLine($"Новый комментарий! Id автора: {lastCommentUserId}. Автор: { authorName }.Текст: {comments.Where(x => x.from_id == lastCommentUserId).FirstOrDefault()?.Text ?? "Кинул стикер"}");
                         Console.ResetColor();
                         Console.WriteLine();
@@ -136,9 +137,10 @@ namespace FreePizza
                        if(commentLifeTimeMs > maxLifeTimeOfComment)
                        {
                             maxLifeTimeOfComment = commentLifeTimeMs;
+                            maxLifeTimeOfCommentAuthorName = authorName;
                        }
                        Console.ForegroundColor = ConsoleColor.Yellow;
-                       Console.WriteLine($"Время жизни последнего комментария: {commentLifeTimeMs / 1000f} секунды");
+                       Console.WriteLine($"Время жизни последнего комментария: {commentLifeTimeMs / 1000f} секунды.");
                        Console.ResetColor();
                    
                        var random = new Random();
@@ -187,9 +189,11 @@ namespace FreePizza
                     Console.WriteLine($"Общее число комментариев: {currentCommentsCount}");
                     Console.WriteLine($"Id юзера, оставившего последний коммент: {lastCommentUserId ?? 0} ");
                     Console.WriteLine($"Всего отправлено моих комментариев: {myCommentsCount}");
-                    Console.WriteLine($"Максимальное время жизни комментария на данный момент: {maxLifeTimeOfComment / 1000f} секунды");
+                    Console.WriteLine($"Максимальное время жизни комментария на данный момент: {maxLifeTimeOfComment / 1000f} секунды. " +
+                        $"Автор: { maxLifeTimeOfCommentAuthorName }");
 
-               
+
+
                     Thread.Sleep(sleepMs);
                 }
                 catch(Exception ex)

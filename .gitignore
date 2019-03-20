@@ -3,3 +3,6 @@
 ################################################################################
 
 /.vs/FreePizza/v15/Server/sqlite3
+.vs
+FreePizza/bin
+FreePizza/obj
