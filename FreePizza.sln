@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.168
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FreePizza", "FreePizza\FreePizza.csproj", "{4E6238CC-ECC9-48C6-A722-BF6E53B1E6C8}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4E6238CC-ECC9-48C6-A722-BF6E53B1E6C8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4E6238CC-ECC9-48C6-A722-BF6E53B1E6C8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4E6238CC-ECC9-48C6-A722-BF6E53B1E6C8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4E6238CC-ECC9-48C6-A722-BF6E53B1E6C8}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {756941B5-3211-4B36-B7D4-5CCD12B9B79B}
+	EndGlobalSection
+EndGlobal
